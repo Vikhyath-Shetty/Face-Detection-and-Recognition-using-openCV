@@ -20,7 +20,7 @@ def main() -> None:
                         help="Face Detector: 'haar' to use Haar detector, 'hog' to use HOG+SVM detector,(default=haar)")
     args = parser.parse_args()
     if args.mode == 'capture':
-        dir_name = input("Enter the name of the entity to be captured: ")
+        capture(args.camera)
         
 
 
