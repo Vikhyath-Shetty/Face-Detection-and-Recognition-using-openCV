@@ -1,6 +1,8 @@
 import argparse
 import logging
-from src.utils import cameraType
+from src.utils import cameraType, create_dir
+from src.capture_faces import capture
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,6 +19,9 @@ def main() -> None:
     parser.add_argument("-d", "--detector", default="haar", type=str,
                         help="Face Detector: 'haar' to use Haar detector, 'hog' to use HOG+SVM detector,(default=haar)")
     args = parser.parse_args()
+    if args.mode == 'capture':
+        dir_name = input("Enter the name of the entity to be captured: ")
+        
 
 
 if __name__ == '__main__':
