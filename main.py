@@ -16,12 +16,11 @@ def main() -> None:
                         help="Select operation: 'Capture' to collect face images, 'train' to build the recoginition modelm, 'detect' to run real time face recognition")
     parser.add_argument("-c", "--camera", default=0, type=cameraType,
                         help="Camera source: pass an integer(0,1,2) for local webcam, or an HTTP/RTSP URL for IP camera/stream,(default=0)")
-    parser.add_argument("-d", "--detector", default="haar", type=str,
+    parser.add_argument("-d", "--detector", default="haar", type=str, choices=["haar", "hog"],
                         help="Face Detector: 'haar' to use Haar detector, 'hog' to use HOG+SVM detector,(default=haar)")
     args = parser.parse_args()
     if args.mode == 'capture':
-        capture(args.camera)
-        
+        capture(args.camera,args.detector)
 
 
 if __name__ == '__main__':
