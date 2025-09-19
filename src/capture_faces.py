@@ -1,7 +1,6 @@
 import cv2 as cv
 import logging
-from .utils import crop_and_save
-
+from utils import crop_and_save
 
 def capture(camera: str | int, detector_type: str) -> None:
     cap = cv.VideoCapture(camera)

@@ -1,14 +1,13 @@
 import os
 import cv2 as cv
-import json
-
-label_map = {}
-images = []
-labels = []
+from utils import save_as_json
+import numpy as np
 
 
-def label_encoding() -> None:
+def label_encoding() -> tuple:
     current_id = 0
+    images, labels = [], []
+    label_map = {}
     dataset_dir = os.path.join(os.getcwd(), "dataset")
     if not os.listdir(dataset_dir):
         raise RuntimeError(
@@ -19,13 +18,23 @@ def label_encoding() -> None:
         for file in os.listdir(person_path):
             if file.endswith('jpg'):
                 img_path = os.path.join(person_path, file)
-                img = cv.imread(img_path)
+                img = cv.imread(img_path,cv.IMREAD_GRAYSCALE)
                 images.append(img)
                 labels.append(current_id)
         current_id += 1
-        
-    
+    save_as_json(os.path.join(
+        os.getcwd(), "model", "labels.json"), label_map)
+    return images, labels
+
+
+def train() -> None:
+    images, labels = label_encoding()
+    recognizer = cv.face.LBPHFaceRecognizer_create() #type:ignore
+    recognizer.train(images,np.array(labels))
+    recognizer.save(os.path.join(os.getcwd(),"model","model.yml"))
+
+
 
 
 if __name__ == "__main__":
-    label_encoding()
+    train()

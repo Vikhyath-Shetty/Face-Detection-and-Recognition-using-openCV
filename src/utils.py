@@ -1,4 +1,5 @@
 from argparse import ArgumentTypeError
+import json
 import os
 import cv2 as cv
 from cv2.typing import MatLike
@@ -33,9 +34,13 @@ def crop_and_save(image: MatLike, points: tuple, dir_name: str, image_id: int) -
 
 
 def clear_data(dir_name: str) -> None:
-    path = os.path.join(os.getcwd(), "dataset", dir_name)
-    if os.path.exists(path):
-        shutil.rmtree(path)
-    else:
-        print("Provided directory doesn't exist!")
+    dataset_path = os.path.join(os.getcwd(), "dataset", dir_name)
+    model_path = os.path.join(os.path.join(os.getcwd(),"model"))
+    os.path.exists(dataset_path) and shutil.rmtree(dataset_path)
+    os.path.exists(model_path) and shutil.rmtree(model_path)
 
+
+
+def save_as_json(location: str, data: dict):
+    with open(location, "w") as f:
+        json.dump(data, f)

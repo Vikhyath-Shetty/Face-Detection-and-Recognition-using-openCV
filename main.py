@@ -1,6 +1,6 @@
 import argparse
 import logging
-from src.utils import cameraType, create_dir
+from src.utils import cameraType
 from src.capture_faces import capture
 
 
