@@ -38,3 +38,4 @@ def clear_data(dir_name: str) -> None:
         shutil.rmtree(path)
     else:
         print("Provided directory doesn't exist!")
+

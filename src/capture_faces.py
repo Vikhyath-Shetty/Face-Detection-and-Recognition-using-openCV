@@ -9,7 +9,7 @@ def capture(camera: str | int, detector_type: str) -> None:
         raise RuntimeError(f"Failed to open camera source: {camera}")
 
     missed_frame, image_count = 0, 0
-    dir_name = input("Enter the entity name to be captured: ")
+    dir_name = input("Enter the name of the person to be captured: ")
     if detector_type == 'haar':
         haar = cv.CascadeClassifier(
             cv.data.haarcascades+"haarcascade_frontalface_default.xml")  # type:ignore
