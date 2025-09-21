@@ -12,7 +12,7 @@ def label_encoding() -> tuple:
     dataset_dir = os.path.join(os.getcwd(), "dataset")
     if not os.path.exists(dataset_dir):
         raise RuntimeError(
-            "Dataset directory doesn't exist. Run capture first to get images!")
+            "Dataset directory doesn't exist. Run 'capture' first to create dataset of images to recognize!")
     for person in os.listdir(dataset_dir):
         person_path = os.path.join(dataset_dir, person)
         label_map[current_id] = person
@@ -36,7 +36,3 @@ def train() -> None:
     recognizer.train(images, np.array(labels))
     recognizer.save(os.path.join(os.getcwd(), "model", "model.yml"))
     logging.info("Completed training. Proceed with detection!")
-
-
-if __name__ == "__main__":
-    train()
