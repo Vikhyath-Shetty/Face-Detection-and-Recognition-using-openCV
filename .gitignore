@@ -10,3 +10,5 @@ wheels/
 .venv
 structure
 src/sample.py
+dataset/
+model/

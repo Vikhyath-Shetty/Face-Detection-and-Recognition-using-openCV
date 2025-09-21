@@ -1,6 +1,7 @@
 import cv2 as cv
 import logging
-from utils import crop_and_save
+from .utils import crop_and_save
+
 
 def capture(camera: str | int, detector_type: str) -> None:
     cap = cv.VideoCapture(camera)
@@ -8,7 +9,7 @@ def capture(camera: str | int, detector_type: str) -> None:
         raise RuntimeError(f"Failed to open camera source: {camera}")
 
     missed_frame, image_count = 0, 0
-    dir_name = input("Enter the name of the person to be captured: ")
+    person_name = input("Enter the name of the person to be captured: ")
     if detector_type == 'haar':
         haar = cv.CascadeClassifier(
             cv.data.haarcascades+"haarcascade_frontalface_default.xml")  # type:ignore
@@ -28,6 +29,7 @@ def capture(camera: str | int, detector_type: str) -> None:
 
         missed_frame = 0
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        logging.info("Capturing images for training!")
         if detector_type == 'haar':
             faces = haar.detectMultiScale(
                 gray, scaleFactor=1.05, minNeighbors=5, minSize=(10, 10))
@@ -38,10 +40,16 @@ def capture(camera: str | int, detector_type: str) -> None:
             cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             image_count += 1
             if (image_count <= 20):
-                crop_and_save(gray, (x, y, w, h), dir_name, image_count)
+                crop_and_save(gray, (x, y, w, h), person_name, image_count)
 
         cv.imshow("Capture Faces - Press 'q' to Quit", frame)
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
     cap.release()
     cv.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    camera = 0
+    detector_type = "haar"
+    capture(camera, detector_type)

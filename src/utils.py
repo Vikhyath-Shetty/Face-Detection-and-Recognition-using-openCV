@@ -32,15 +32,28 @@ def crop_and_save(image: MatLike, points: tuple, dir_name: str, image_id: int) -
     directory = create_dir(dir_name)
     cv.imwrite(os.path.join(directory, f"{image_id}.jpg"), face_resized)
 
-
-def clear_data(dir_name: str) -> None:
-    dataset_path = os.path.join(os.getcwd(), "dataset", dir_name)
-    model_path = os.path.join(os.path.join(os.getcwd(),"model"))
-    os.path.exists(dataset_path) and shutil.rmtree(dataset_path)
-    os.path.exists(model_path) and shutil.rmtree(model_path)
+ # DEV FUNCTION: Cleans up the 'model/' and 'dataset/' directories.
 
 
+def clear_data() -> None:
+    dataset_path = os.path.join(os.getcwd(), "dataset")
+    model_path = os.path.join(os.getcwd(), "model")
+    if os.path.exists(dataset_path):
+        shutil.rmtree(dataset_path)
+    if os.path.exists(model_path):
+        shutil.rmtree(model_path)
 
-def save_as_json(location: str, data: dict):
-    with open(location, "w") as f:
+
+def save_as_json(dir_name: str, file_name: str, data: dict) -> None:
+    dir_path = os.path.join(os.getcwd(), dir_name)
+    if not os.path.exists(dir_path):
+        os.mkdir(dir_path)
+    file_path = os.path.join(dir_path, file_name)
+    with open(file_path, "w") as f:
         json.dump(data, f)
+
+
+def parse_json(location: str) -> dict:
+    with open(location, "r") as f:
+        data = json.load(f)
+    return data
